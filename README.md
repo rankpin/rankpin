@@ -66,3 +66,79 @@ public override void onFailScore(string message)
 	Debug.LogWarning("message);
 }
 ```
+- Update Friend List
+Your friend’s list must be uploaded to server in order to use friend ranking. If you are not going to use this feature, the list does not need to be uploaded.
+Friend’s list must update User ID of friend’s list to server in ArrayList.
+```html
+* Reqeust.
+private void updateFriends()
+{
+	ArrayList friends = new ArrayList();
+	friends.Add("33");
+	friends.Add("367");
+	friends.Add("369");
+	this.updateFriends(friends);
+}
+* Response.
+public override void onSuccessFriends()
+{
+	base.onSuccessFriends();
+	Debug.Log("Update friends list.!");
+}
+public override void onFailFriends(string message)
+{
+	base.onFailFriends(message);
+	Debug.LogWarning(message);
+}
+```
+- My Ranking
+Retrieves my ranking information. You can retrieve my ranking from all, weekly and friend ranking.
+```html
+* Reqeust.
+private void requestRankMe()
+{
+	this.rankMe("me");
+}
+* Response.
+public override void onSuccesMe(int total, int rank, int score, Hashtable data)
+{
+	base.onSuccesMe(total, rank, score, data);
+	Debug.Log(string.Format("total:{0},rank:{1},score:{2}",total,rank,score));
+}
+public override void onFailMe(string message)
+{
+	base.onFailMe(message);
+	Debug.LogWarning(message);
+}
+```
+- All ranking
+Retrieve ranking information from all users.
+You can set offset and limit when retrieving ranking information.
+offset : Ranking offset
+limit : Numbers of user’s retrieved ranking data (maximum of 50)
+```html
+* Reqeust.
+private void requestRank()
+{
+	this.rank("total");
+}
+* Response.
+public override void onSuccessRank(int total, ArrayList users)
+{
+	base.onSuccessRank(total, users);
+	Debug.Log(string.Format("total:{0}", total));
+	foreach(Hashtable user in users)
+	{
+		HashtableHelper.print("Rank", user);
+		Hashtable data = (Hashtable)user[RankPin.RankConstants.KEY_DATA];
+		if(data == null)
+			continue;
+		HashtableHelper.print("Data", data);
+	}
+}
+public override void onFailRank(string message)
+{
+	base.onFailRank(message);
+	Debug.LogWarning(message);
+}
+```
