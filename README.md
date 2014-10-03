@@ -15,7 +15,11 @@ Retrieving ranking data from server
  - All ranking: Accumulated ranking for all users, weekly all user ranking.
  - Friend ranking: Accumulated all users ranking, weekly friend ranking.
  * Weekly ranking is refreshed on Monday’s.
-
+ 
+# Documents
+```html
+Assets/RankPin/Document
+```
 
 # Samples
 - User Data Update
