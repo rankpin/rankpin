@@ -15,3 +15,32 @@ Retrieving ranking data from server
  - All ranking: Accumulated ranking for all users, weekly all user ranking.
  - Friend ranking: Accumulated all users ranking, weekly friend ranking.
  * Weekly ranking is refreshed on Monday’s.
+
+
+# Samples
+- User Data Update
+Update my information on server. Unique ID is required to update.
+Alternatively, you can upload various information in a Hashtable format for user data.
+(Internally Hashtable data is converted into JSON format and size over 500 bytes will not be saved on server)
+```html
+* Reqeust.
+private void updateUser()
+{
+	Hashtable data = new Hashtable();
+	data.Add("name", "Daniel");
+	data.Add("url", “http://xxx.png“);
+	this.updateUser(data);
+}
+* Response.
+public override void onSuccessUser()
+{
+	base.onSuccessUser();
+	Debug.Log("Update user informations.!");
+}
+public override void onFailUser(string message)
+{
+	base.onFailUser(message);
+	Debug.LogWarning(message);
+}
+bower install --save react
+```
