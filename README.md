@@ -42,5 +42,27 @@ public override void onFailUser(string message)
 	base.onFailUser(message);
 	Debug.LogWarning(message);
 }
-bower install --save react
+```
+- Score Update
+Perform operation of updating your ranking score information onto server.
+Scores are all ranking, weekly ranking and friend ranking data.
+(Score data uploads accumulated scores. Weekly rankings automatically determines current week’s score from server)
+```html
+* Reqeust.
+private void updateScore()
+{
+	int score = 102345;
+	this.updateScore((uint)score);
+}
+* Response.
+public override void onSuccessScore()
+{
+	base.onSuccessScore();
+	Debug.Log("Update score.!");
+}
+public override void onFailScore(string message)
+{
+	base.onFailScore(message);
+	Debug.LogWarning("message);
+}
 ```
