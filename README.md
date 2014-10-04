@@ -19,6 +19,8 @@ Retrieving ranking data from server
 # Documents
 ```html
 Assets/RankPin/Document
+ - RankPin_English.pdf
+ - RankPin_Korean.pdf
 ```
 
 # Samples
