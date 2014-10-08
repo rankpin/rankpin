@@ -1,0 +1,199 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Rankpin by rankpin</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Rankpin</h1>
+        <p>Unity RankPin</p>
+
+        <p class="view"><a href="https://github.com/rankpin/rankpin">View the Project on GitHub <small>rankpin/rankpin</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/rankpin/rankpin/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/rankpin/rankpin/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/rankpin/rankpin">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h1>
+
+<p>RankPin is designed to easily apply a ranking system with a simple setting in Unity. It provides a cost efficient method to simplify and speed up the process of Unity application and game development process. With a few clicks you will be able to apply a game ranking system.</p>
+
+<h1>
+<a name="functions-of-rankpin" class="anchor" href="#functions-of-rankpin"><span class="octicon octicon-link"></span></a>Functions of RankPin</h1>
+
+<p>There are two functions of RankPin. First is to save data onto the server and the second to retrieve the saved data.
+Saving data to server</p>
+
+<ul>
+<li>User data: Information (e.g. name, image url) required in Ranking UI</li>
+<li>Score: Accumulated score used for ranking.</li>
+<li>Friend list: Upload self and friend’s list data.
+Retrieving ranking data from server</li>
+<li>My ranking: My ranking from all users, my ranking between friends.</li>
+<li>All ranking: Accumulated ranking for all users, weekly all user ranking.</li>
+<li>Friend ranking: Accumulated all users ranking, weekly friend ranking.</li>
+<li>Weekly ranking is refreshed on Monday’s.</li>
+</ul><h1>
+<a name="documents" class="anchor" href="#documents"><span class="octicon octicon-link"></span></a>Documents</h1>
+
+<div class="highlight highlight-html"><pre>Assets/RankPin/Document
+ - RankPin_English.pdf
+ - RankPin_Korean.pdf
+</pre></div>
+
+<h1>
+<a name="samples" class="anchor" href="#samples"><span class="octicon octicon-link"></span></a>Samples</h1>
+
+<ul>
+<li>User Data Update
+Update my information on server. Unique ID is required to update.
+Alternatively, you can upload various information in a Hashtable format for user data.
+(Internally Hashtable data is converted into JSON format and size over 500 bytes will not be saved on server)</li>
+</ul><div class="highlight highlight-html"><pre>* Reqeust.
+private void updateUser()
+{
+    Hashtable data = new Hashtable();
+    data.Add("name", "Daniel");
+    data.Add("url", “http://xxx.png“);
+    this.updateUser(data);
+}
+* Response.
+public override void onSuccessUser()
+{
+    base.onSuccessUser();
+    Debug.Log("Update user informations.!");
+}
+public override void onFailUser(string message)
+{
+    base.onFailUser(message);
+    Debug.LogWarning(message);
+}
+</pre></div>
+
+<ul>
+<li>Score Update
+Perform operation of updating your ranking score information onto server.
+Scores are all ranking, weekly ranking and friend ranking data.
+(Score data uploads accumulated scores. Weekly rankings automatically determines current week’s score from server)</li>
+</ul><div class="highlight highlight-html"><pre>* Reqeust.
+private void updateScore()
+{
+    int score = 102345;
+    this.updateScore((uint)score);
+}
+* Response.
+public override void onSuccessScore()
+{
+    base.onSuccessScore();
+    Debug.Log("Update score.!");
+}
+public override void onFailScore(string message)
+{
+    base.onFailScore(message);
+    Debug.LogWarning("message);
+}
+</pre></div>
+
+<ul>
+<li>Update Friend List
+Your friend’s list must be uploaded to server in order to use friend ranking. If you are not going to use this feature, the list does not need to be uploaded.
+Friend’s list must update User ID of friend’s list to server in ArrayList.</li>
+</ul><div class="highlight highlight-html"><pre>* Reqeust.
+private void updateFriends()
+{
+    ArrayList friends = new ArrayList();
+    friends.Add("33");
+    friends.Add("367");
+    friends.Add("369");
+    this.updateFriends(friends);
+}
+* Response.
+public override void onSuccessFriends()
+{
+    base.onSuccessFriends();
+    Debug.Log("Update friends list.!");
+}
+public override void onFailFriends(string message)
+{
+    base.onFailFriends(message);
+    Debug.LogWarning(message);
+}
+</pre></div>
+
+<ul>
+<li>My Ranking
+Retrieves my ranking information. You can retrieve my ranking from all, weekly and friend ranking.</li>
+</ul><div class="highlight highlight-html"><pre>* Reqeust.
+private void requestRankMe()
+{
+    this.rankMe("me");
+}
+* Response.
+public override void onSuccesMe(int total, int rank, int score, Hashtable data)
+{
+    base.onSuccesMe(total, rank, score, data);
+    Debug.Log(string.Format("total:{0},rank:{1},score:{2}",total,rank,score));
+}
+public override void onFailMe(string message)
+{
+    base.onFailMe(message);
+    Debug.LogWarning(message);
+}
+</pre></div>
+
+<ul>
+<li>All ranking
+Retrieve ranking information from all users.
+You can set offset and limit when retrieving ranking information.
+offset : Ranking offset
+limit : Numbers of user’s retrieved ranking data (maximum of 50)</li>
+</ul><div class="highlight highlight-html"><pre>* Reqeust.
+private void requestRank()
+{
+    this.rank("total");
+}
+* Response.
+public override void onSuccessRank(int total, ArrayList users)
+{
+    base.onSuccessRank(total, users);
+    Debug.Log(string.Format("total:{0}", total));
+    foreach(Hashtable user in users)
+    {
+        HashtableHelper.print("Rank", user);
+        Hashtable data = (Hashtable)user[RankPin.RankConstants.KEY_DATA];
+        if(data == null)
+            continue;
+        HashtableHelper.print("Data", data);
+    }
+}
+public override void onFailRank(string message)
+{
+    base.onFailRank(message);
+    Debug.LogWarning(message);
+}
+</pre></div>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/rankpin">rankpin</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
