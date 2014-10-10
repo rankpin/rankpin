@@ -3,7 +3,7 @@
  RankPin is designed to easily apply a ranking system with a simple setting in Unity. It provides a cost efficient method to simplify and speed up the process of Unity application and game development process. With a few clicks you will be able to apply a game ranking system.
 
 
-# Functions of RankPin
+# Features
 
  There are two functions of RankPin. First is to save data onto the server and the second to retrieve the saved data.
 Saving data to server
